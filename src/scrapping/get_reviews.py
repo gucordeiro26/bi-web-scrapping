@@ -4,9 +4,14 @@ import json
 import time
 import re
 from datetime import datetime
+import os
 
-input_csv = "avaliacoes_casasbahia.csv"
-output_csv = "comentarios_produtos.csv"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+project_root = os.path.abspath(os.path.join(script_dir, '..', '..'))
+
+input_csv = os.path.join(project_root, 'data', 'raw', 'avaliacoes_casasbahia.csv')
+output_csv = os.path.join(project_root, 'data', 'raw', 'comentarios_produtos.csv')
 
 def coletar_dados(id_avaliacoes):
     url = f"https://reviews-api.konfidency.com.br/casasbahia/{id_avaliacoes}/summary/helpfulScore,desc?pageSize=100&page=1"

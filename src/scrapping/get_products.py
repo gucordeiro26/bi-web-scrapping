@@ -10,6 +10,9 @@ from agents import USER_AGENTS
 import urllib.parse
 from dotenv import load_dotenv
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.abspath(os.path.join(script_dir, '..', '..'))
+
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 TOKEN_API = os.getenv("TOKEN_API")
 
@@ -91,8 +94,8 @@ def coletar_opinioes(produto):
     return comentarios
 
 def main():
-    entrada_csv = "produtos_casasbahia.csv"
-    saida_csv = "avaliacoes_casasbahia.csv"
+    entrada_csv = os.path.join(project_root, 'data', 'raw', 'produtos_casasbahia.csv')
+    saida_csv = os.path.join(project_root, 'data', 'raw', 'avaliacoes_casasbahia.csv')
 
     if not os.path.exists(entrada_csv):
         print(f"Arquivo '{entrada_csv}' não encontrado.")

@@ -11,8 +11,8 @@ __pycache__/
 .idea/
 
 # Arquivos de dados (Opcional, mas recomendado para Big Data)
-data/raw/
-data/output/
+# data/raw/
+# data/output/
 
 # Arquivos de ambiente com senhas/tokens
 .env

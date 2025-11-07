@@ -1,0 +1,30 @@
+# Ambientes virtuais
+venv/
+.venv/
+
+# Arquivos de cache do Python
+__pycache__/
+*.pyc
+
+# Arquivos de configuração de IDEs
+.vscode/
+.idea/
+
+# Arquivos de Dados e Banco de Dados
+/data/raw/
+/data/output/
+
+# Ignora os arquivos de banco de dados do DuckDB
+*.duckdb
+*.duckdb.wal
+
+# Arquivos de Cache de Notebook
+# Ignora as pastas de autosave do Jupyter
+.ipynb_checkpoints/
+
+# Arquivos de configuração e segredos
+.env
+
+# Exceção: Mantenha as pastas no Git, mesmo que vazias, com um arquivo .gitkeep
+!/data/raw/.gitkeep
+!/data/output/.gitkeep

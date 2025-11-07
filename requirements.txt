@@ -1,0 +1,18 @@
+# Bibliotecas do Web Scraping
+requests
+beautifulsoup4
+python-dotenv
+
+# Bibliotecas do Pipeline de NLP
+pandas
+leia-br
+unidecode
+spacy
+
+# Bibliotecas do Banco de Dados
+duckdb
+sqlalchemy
+duckdb-engine
+
+# Ferramentas de Desenvolvimento
+notebook

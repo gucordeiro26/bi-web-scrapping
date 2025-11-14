@@ -12,7 +12,8 @@ O projeto é dividido em um pipeline de ponta a ponta:
 2.  **Limpeza e Processamento:** O texto dos comentários é normalizado (acentos, caixa baixa, caracteres especiais) para preparar a análise.
 3.  **Análise de Sentimento:** Um modelo híbrido (baseado em regras de nota e no léxico `LeIA`) classifica cada comentário como `Positivo`, `Negativo` ou `Neutro`.
 4.  **Extração de Tópicos:** A biblioteca `spaCy` é usada para analisar os comentários e extrair os substantivos-chave (ex: "bateria", "tela", "entrega"), indicando *sobre o que* o cliente falou.
-5.  **Persistência (Data Warehouse):** O resultado final (comentários, sentimentos e tópicos) é salvo em um banco de dados `DuckDB`, pronto para a análise de BI.
+5.  **Extração de Palavras:** O script `extract_words_from_comments.py` processa os comentários classificados e extrai as palavras individuais, gerando dois arquivos CSV separados por sentimento (positivo e negativo) com as colunas `palavra` e `id_comentario`.
+6.  **Persistência (Data Warehouse):** O resultado final (comentários, sentimentos e tópicos) é salvo em um banco de dados `DuckDB`, pronto para a análise de BI.
 
 ## 🗂️ Estrutura do Repositório
 
@@ -36,7 +37,8 @@ bi-web-scrapping/
 │   ├── __init__.py
 │   ├── processing/         <-- Módulo Python com toda a lógica de NLP e BD
 │   │   ├── __init__.py
-│   │   └── text_processor.py
+│   │   ├── text_processor.py
+│   │   └── extract_words_from_comments.py  <-- Script para extrair palavras dos comentários
 │   └── scraping/           <-- Módulo Python com os scripts de coleta de dados
 │       ├── __init__.py
 │       ├── agents.py
@@ -108,8 +110,41 @@ python -m notebook
 3.  **REINICIE O KERNEL:** Vá ao menu **"Kernel" > "Restart Kernel..."** (para garantir que todas as bibliotecas instaladas sejam carregadas).
 4.  Execute todas as células do notebook, de cima para baixo.
 
-### 4. Saída do Projeto
+### 4. Extração de Palavras dos Comentários (Análise Complementar)
+
+Após executar o pipeline completo, você pode extrair as palavras individuais dos comentários classificados, gerando dois arquivos CSV separados por sentimento.
+
+**Como Executar:**
+(Com o ambiente `(venv)` ativo, na pasta raiz do projeto)
+
+```bash
+python src/processing/extract_words_from_comments.py
+```
+
+**O que este script faz:**
+
+1. Lê o arquivo `comentarios_classificados.csv` gerado pelo pipeline.
+2. Separa os comentários por sentimento (Positivos e Negativos).
+3. Extrai todas as palavras de cada comentário:
+   - Remove pontuação e caracteres especiais
+   - Converte para minúsculas
+   - Mantém suporte a acentos (áéíóúãõçà)
+4. Gera dois arquivos CSV na pasta `data/output/`:
+   - **`palavras_positivas.csv`** - Palavras dos comentários positivos
+   - **`palavras_negativas.csv`** - Palavras dos comentários negativos
+
+Ambos os arquivos possuem as colunas:
+- `palavra`: A palavra extraída do comentário
+- `id_comentario`: O identificador único do comentário original
+
+Esta análise é útil para identificar quais palavras mais frequentemente aparecem em comentários positivos versus negativos, ajudando na análise de sentimentos e no entendimento das preferências dos clientes.
+
+### 5. Saída do Projeto
 
 Após a execução bem-sucedida, o arquivo final **`reviews.duckdb`** estará disponível na pasta `data/output/`.
 
 Este arquivo contém a tabela `reviews_classificadas` com todas as colunas, incluindo `sentimento` e `topicos`, pronta para ser conectada ao Tableau.
+
+Adicionalmente, após executar o script de extração de palavras, você terá disponíveis:
+- **`palavras_positivas.csv`** - Palavras extraídas dos comentários positivos
+- **`palavras_negativas.csv`** - Palavras extraídas dos comentários negativos
